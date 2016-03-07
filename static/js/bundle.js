@@ -19669,7 +19669,7 @@
 	var IndexRoute=__webpack_require__(161).IndexRoute
 	var Index = __webpack_require__(218)
 	var Layout = __webpack_require__(242)
-	var Content = __webpack_require__(237)
+	var Content = __webpack_require__(239)
 	var Landing = __webpack_require__(243)
 
 	var createBrowserHistory = __webpack_require__(215)
@@ -24750,10 +24750,10 @@
 	var React = __webpack_require__(148)
 	var Navbar = __webpack_require__(219)
 	var Navbar = __webpack_require__(219)
-	var CategoryList = __webpack_require__(241)
+	var CategoryList = __webpack_require__(237)
 
-	var Content = __webpack_require__(237)
-	var Container = __webpack_require__(240)
+	var Content = __webpack_require__(239)
+	var Container = __webpack_require__(241)
 	var connect = __webpack_require__(220).connect
 	var Index = React.createClass({displayName: "Index",
 	    render: function() {
@@ -26089,42 +26089,42 @@
 
 	/** @jsx React.DOM */var ReactDOM = __webpack_require__(2)
 	var React = __webpack_require__(148)
-	var RPC = __webpack_require__(238)
 	var connect = __webpack_require__(220).connect
-	var ContentData = __webpack_require__(239)
-	var Content= React.createClass({displayName: "Content",
-	    getInitialState : function(){
+	var RPC = __webpack_require__(238)
+	var CategoriesList = React.createClass({displayName: "CategoriesList",
+	    getInitialState :function(){
 	        return {};
 	    },
-	    componentDidMount : function(){
+	    componentDidMount: function(){
 	        console.log("called");
 	        var that=this;
-	        RPC.execute("content","search_read_path",[[],["title","body","create_time"]],{},function(err,data) {
+	        RPC.execute("category","search_read_path",[[],["name"]],{},function(err,data) {
 	            this.setState({data:data});
 	        }.bind(this));
 	    },
 	    render: function() {
-	        console.log("render is called");
 	        var data = this.state.data
 	        if (!data) return React.createElement("div", null, "Loading");
 	        console.log("data is ",data,data.length);
-	        return (
-	           React.createElement("div", {className: "col-md-10 col-sm-10"}, 
-	           data.map(function(dataItem) {
-	           return React.createElement(ContentData, {key: dataItem.id, info: dataItem, create_time: dataItem.create_time})
-	           }.bind(this))
-	          )
-	        );
-		},    
+	    	return React.createElement("div", {className: "col-md-2 col-sm-2 hidden-xs"}, 
+	            React.createElement("h5", null, React.createElement("strong", null, React.createElement("span", null, "Categories "))), 
+	            React.createElement("ul", {className: "list-group"}, 
+	                data.map(function(dataItem){
+	                    return React.createElement("li", {className: "list-group-item"}, React.createElement("span", null, dataItem.name, " "))
+	                }.bind(this))
+	            )
+
+	        )
+	    	    },
 	});
-	module.exports=(Content);
+	module.exports = CategoriesList;
 
 
 /***/ },
 /* 238 */
 /***/ function(module, exports) {
 
-	var rpc_url="http://localhost:9998/json_rpc";
+	var rpc_url="http://54.254.142.214:9999/json_rpc";
 
 	module.exports.execute=function (model,method,args,opts,cb) {
 	    console.log("RPC",model,method,args,opts);
@@ -26198,6 +26198,43 @@
 	var React = __webpack_require__(148)
 	var RPC = __webpack_require__(238)
 	var connect = __webpack_require__(220).connect
+	var ContentData = __webpack_require__(240)
+	var Content= React.createClass({displayName: "Content",
+	    getInitialState : function(){
+	        return {};
+	    },
+	    componentDidMount : function(){
+	        console.log("called");
+	        var that=this;
+	        RPC.execute("content","search_read_path",[[],["title","body","create_time"]],{},function(err,data) {
+	            this.setState({data:data});
+	        }.bind(this));
+	    },
+	    render: function() {
+	        console.log("render is called");
+	        var data = this.state.data
+	        if (!data) return React.createElement("div", null, "Loading");
+	        console.log("data is ",data,data.length);
+	        return (
+	           React.createElement("div", {className: "col-md-10 col-sm-10"}, 
+	           data.map(function(dataItem) {
+	           return React.createElement(ContentData, {key: dataItem.id, info: dataItem, create_time: dataItem.create_time})
+	           }.bind(this))
+	          )
+	        );
+		},    
+	});
+	module.exports=(Content);
+
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/** @jsx React.DOM */var ReactDOM = __webpack_require__(2)
+	var React = __webpack_require__(148)
+	var RPC = __webpack_require__(238)
+	var connect = __webpack_require__(220).connect
 	var ContentData= React.createClass({displayName: "ContentData",
 	    render: function() {
 	        data = this.props.info;
@@ -26233,13 +26270,13 @@
 
 
 /***/ },
-/* 240 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/** @jsx React.DOM */var ReactDOM = __webpack_require__(2)
 	var React = __webpack_require__(148)
-	var CategoriesList = __webpack_require__(241)
-	var Content = __webpack_require__(237)
+	var CategoriesList = __webpack_require__(237)
+	var Content = __webpack_require__(239)
 	var Container= React.createClass({displayName: "Container",
 	    render: function() {
 	        console.log("container");
@@ -26250,43 +26287,6 @@
 	    	  },    
 	});
 	module.exports = Container;
-
-
-/***/ },
-/* 241 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/** @jsx React.DOM */var ReactDOM = __webpack_require__(2)
-	var React = __webpack_require__(148)
-	var connect = __webpack_require__(220).connect
-	var RPC = __webpack_require__(238)
-	var CategoriesList = React.createClass({displayName: "CategoriesList",
-	    getInitialState :function(){
-	        return {};
-	    },
-	    componentDidMount: function(){
-	        console.log("called");
-	        var that=this;
-	        RPC.execute("category","search_read_path",[[],["name"]],{},function(err,data) {
-	            this.setState({data:data});
-	        }.bind(this));
-	    },
-	    render: function() {
-	        var data = this.state.data
-	        if (!data) return React.createElement("div", null, "Loading");
-	        console.log("data is ",data,data.length);
-	    	return React.createElement("div", {className: "col-md-2 col-sm-2 hidden-xs"}, 
-	            React.createElement("h5", null, React.createElement("strong", null, React.createElement("span", null, "Categories "))), 
-	            React.createElement("ul", {className: "list-group"}, 
-	                data.map(function(dataItem){
-	                    return React.createElement("li", {className: "list-group-item"}, React.createElement("span", null, dataItem.name, " "))
-	                }.bind(this))
-	            )
-
-	        )
-	    	    },
-	});
-	module.exports = CategoriesList;
 
 
 /***/ },

@@ -1,4 +1,4 @@
-var rpc_url="http://localhost:9998/json_rpc";
+var rpc_url="http://54.254.142.214:9999/json_rpc";
 
 module.exports.execute=function (model,method,args,opts,cb) {
     console.log("RPC",model,method,args,opts);
